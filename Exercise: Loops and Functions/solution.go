@@ -2,18 +2,23 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
 func Sqrt(x float64) float64 {
-	z := float64(1)
-	var closetZ float64
-	acceptedChange := 0.00000000001
-	for i := 1; i <= 100 && z < x; i++ {
+	z := float64(1)     // the inital number to try
+	var closetZ float64 // the answer to return
+	maxTry := 100       // try only 100 times
+	acceptedChange := 0.0000000001
+	for i := 1; i <= maxTry; i++ {
 		var delta = (z*z - x) / (2 * z)
+		comparson := delta
+		//convert minus number to postiive number
+		if comparson < 0 {
+			comparson = -comparson
+		}
 
-		//condition of stopping to find, meaing get answer in last z
-		if math.Abs(delta) < acceptedChange {
+		//condition of stopping to find, meaning we got answer in last z
+		if comparson < acceptedChange {
 			fmt.Printf("Run %d times to find answer %f. Not bad.\n", i, z)
 			return closetZ
 		}
@@ -21,8 +26,8 @@ func Sqrt(x float64) float64 {
 		fmt.Printf("delta %d is delta %e\n", i, delta)
 		closetZ = z
 
-		if i == 100 {
-			fmt.Println("\nRun 100 times. No good!")
+		if i == maxTry {
+			fmt.Printf("\nRun %d times. No good!\n", maxTry)
 			fmt.Println("Accepted change should be larger than %e", acceptedChange)
 			fmt.Println("z is ", z)
 		}
@@ -31,6 +36,6 @@ func Sqrt(x float64) float64 {
 }
 
 func main() {
-	ans := Sqrt(2000000000000000)
+	ans := Sqrt(2000000000)
 	fmt.Printf("ans^2 is %f", ans*ans)
 }
